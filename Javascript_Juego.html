@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<title>Juego Canvas</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="curso Desarrollo Web">
+		<meta name="keywords" content="HTML5,CSS3,JavaScript,PHP">
+		<meta name="author" content="Jav Hernández">
+		<link rel="stylesheet" href="#">
+		<style>
+			
+			canvas{
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 50px;
+				display: block;
+				border: 1px solid skyblue;
+				background-color: gray;
+			}
+			p{
+				text-align: center;
+			}
+		</style>
+		<script type="text/javascript" >
+			var myGamePiece;
+			var derecha;
+			var sube;
+			var vRaqueta=2;
+			
+			function startGame() {
+				myGameArea.start();
+				myGamePiece = new component(100,10,"skyblue",200,450,240,240,10);
+			}
+
+			var myGameArea = {
+				canvas : document.createElement("canvas"),
+				start : function() {
+					this.canvas.width = 500;
+					this.canvas.height = 500;
+					this.context = this.canvas.getContext("2d");
+					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+					this.interval = setInterval(updateGameArea, 20);
+					window.addEventListener('keydown', function (e){
+						myGameArea.key = e.keyCode;
+					})
+					window.addEventListener('keyup', function (e){
+						myGameArea.key = false;
+					})
+				},
+				clear : function(){
+					this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+				},
+				stop : function(){
+					clearInterval(this.interval);
+				}
+			}
+			
+			function component(width, height, color, x, y, cx, cy, cr,){
+				this.width = width;
+				this.height = height;
+				this.posX = 0;
+				this.x = x;
+				this.y = y;
+				this.cx = cx;
+				this.cy = cy;
+				this.cr = cr;
+				this.color = color;
+				derecha = true;
+				sube = true;
+				var score = 0;
+				var velocidad = 1;
+				this.update = function(){
+					ctx = myGameArea.context;
+					ctx.fillStyle = this.color;
+					ctx.fillRect(this.x, this.y, this.width, this.height);
+					ctx.beginPath();
+					ctx.strokeStyle = "black";
+					ctx.arc(this.cx,this.cy,this.cr,0,2*Math.PI,true);
+					ctx.stroke();
+					ctx.fillStyle = "black";
+					ctx.font = "15px Arial";
+					ctx.fillText("Puntuación: "+score,380,20);
+				}
+				this.newPos = function(){
+					if(this.x < 0){
+						this.x= 0;
+					}
+					else if(this.x > 400){
+						this.x = 400;
+					}
+					else{
+						this.x += this.posX;
+					}
+				}
+				this.moveC = function(){
+				//Colision 
+				if(((this.cx)>=this.x && (this.cx)<=(this.x+110)) && (this.cy==440)){
+					sube = !sube;
+					score++;
+					if(score%10==0){
+						vRaqueta+=2;
+					}
+					velocidad+=0.5;
+					if(Math.floor((Math.random() * 10) + 1)<=5){
+						derecha = !derecha;
+					}
+					
+				}
+				//Movimiento de la pelota				 
+				 if(derecha){
+					this.cx+=velocidad;
+					if(this.cx>490){
+						derecha=!derecha;
+					}
+				 }
+				 else{
+					this.cx-=velocidad;
+					if(this.cx<10){
+					derecha = !derecha;
+					}
+				 }
+				 if(sube){
+					this.cy+=velocidad;
+					
+				 }
+				 else{
+					this.cy-=velocidad;
+					if(this.cy<=10){
+						sube = !sube;
+					}
+					
+				 }
+				}
+				this.crash = function(){
+					var stop = true;
+					if(this.cy>=450){
+						stop = false;
+					}
+					return stop;
+				}
+			}
+			
+			function updateGameArea(){
+				myGameArea.clear();
+				if(!myGamePiece.crash()){
+					myGameArea.stop();
+				}
+				myGamePiece.posX = 0;
+				if (myGameArea.key && myGameArea.key == 37) {myGamePiece.posX = -vRaqueta; }
+				if (myGameArea.key && myGameArea.key == 39) {myGamePiece.posX = vRaqueta; }
+				myGamePiece.newPos();
+				myGamePiece.colision;
+				myGamePiece.moveC();
+				myGamePiece.update();
+			}
+		</script>
+	</head>
+	<body onload="startGame()">
+		<p><b>Utiliza las flechas izquierda y derecha del teclado para mover la raqueta.</b></p>
+	</body>
+</html>

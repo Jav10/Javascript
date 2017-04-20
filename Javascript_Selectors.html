@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<title>API Selectors</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="curso Desarrollo Web">
+		<meta name="keywords" content="HTML5,CSS3,JavaScript,PHP">
+		<meta name="author" content="Jav Hernández">
+		<link rel="stylesheet" href="#">
+		<style>
+			#box{
+				width: 270px;
+				border: 1px solid black;
+				background-color: rgb(190,210,230);
+				padding-left: 3px;
+				text-align: center;
+			}
+			.dos{
+				display: block;
+				margin-top: 50px;
+				width: 200px;
+				height: 20px;
+				border: 2px dotted silver;
+				padding-left: 5px;
+			}
+			button{
+				margin-top: 62px;
+			}
+			li{
+				width: 200px;
+				border: 1px solid silver;
+				margin-bottom: 5px;
+				padding-left: 5px;
+			}
+		</style>
+		<script type="text/javascript" >
+			function verificar(){
+				if(document.querySelector){
+					var msg = "El API tiene soporte en este navegador";
+					document.querySelector('#box').innerHTML = msg;
+				}
+				else{
+					alert("El API no tiene soporte en este navegador");
+				}
+			}
+			function seleccion(){
+				var x = document.getElementsByClassName("dos");
+				x[2].style.background = "rgb(195,215,235)";
+			}
+			function seleccionDos(){
+				var i;
+				items=document.querySelectorAll('li');
+				items[0].innerHTML = items.length;
+				for(i=0; i<(items.length);i++){
+					items[i].style.background = "rgb(50,80,120)";
+				}
+			}
+		
+		</script>
+	</head>
+	<body onload="verificar()">
+		<h1>API Selectors</h1>
+		<div id="box"></div>
+		<div class="dos"></div>
+		<div class="dos"></div>
+		<div class="dos"></div>
+		<button onclick="seleccion()">Seleccionar</button>
+		<ul>
+			<li>Uno</li>
+			<li>Dos</li>
+			<li>Tres</li>
+		</ul>
+		<button onclick="seleccionDos()">Seleccionar Dos</button>
+	</body>
+</html>
