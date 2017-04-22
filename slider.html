@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<style>
+			div{
+				width: 100%;
+				text-align: center;
+			}
+			img{
+				margin: 0 auto;
+				border: 5px dotted black;
+				border-radius: 400px;
+			}
+		</style>
+		<script>
+			//variable para controlar la ubicación
+			//de las imagenes dentro del arreglo
+			var i = 0;
+			//guardamos las imagenes en un arreglo
+			var imagenes = [];
+			imagenes[0]="animal-1868225_640.jpg";
+			imagenes[1]="blacktip-1294753_640.jpg";
+			imagenes[2]="animal-1867075_640.jpg";
+			//funcion del evento click para cambiar la imagen
+			function set(){
+				//aumentamos en uno a la variable
+				//para cambiar al siguiente espacio del arreglo
+				++i;
+				//si es más grande que el tamaño del arreglo
+				//volvemos a la primera imagen
+				if(i>=imagenes.length){
+					i=0;
+				}
+				//seleccionamos el elemento por id y lo guardamos
+				//en una variable
+				var x = document.getElementById("slider");
+				//cambiamos el atributo src del elemento seleccionado
+				x.src = imagenes[i];
+				
+			}
+		</script>
+	</head>
+	<body>
+		
+		<div>
+			<h3>Den click en la imagen para que cambie</h3>
+			<img id="slider" onclick="set()" src="animal-1868225_640.jpg" width="500px" height="500px">
+		</div>
+	</body>
+</html>
